@@ -1,0 +1,25 @@
+# foobar.yaml
+# AMQP_URI: 'amqp://guest:guest@https://163.172.154.92'
+AMQP_URI: 'amqp://guest:guest@localhost'
+WEB_SERVER_ADDRESS: '0.0.0.0:8000'
+rpc_exchange: 'nameko-rpc'
+max_workers: 10
+parent_calls_tracked: 10
+
+LOGGING:
+    version: 1
+    disable_existing_loggers: false
+    formatters:
+        simple:
+            format: "%(levelname)s:%(name)s - %(module)s - %(message)s"
+    handlers:
+        console:
+            class: logging.StreamHandler
+            formatter: simple
+    loggers:
+        nameko:
+            level: DEBUG
+            handlers: [console]
+    root:
+        level: DEBUG
+        handlers: [console]
