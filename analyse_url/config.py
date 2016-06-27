@@ -22,8 +22,15 @@ CONFIG = join(ROOT_PATH, 'config.yaml')
 FS_PATH = join(PROJECT_PATH, 'policies', 'data')
 
 # analyse-url configuration
-# FIXME: temporal url for development
-MD_URL = 'http://127.0.0.1:8001/analyseurl'
+# https://api.openintegrity.org/policies/https://guardianproject.info/home/data-usage-and-protection-policies/
+COUCHDB_URL = 'https://staging-store.openintegrity.org'
+MD_DB = 'tos'
+MD_URL = '/'.join([COUCHDB_URL,MD_DB,'%s'])
+
+# COUCHDB_URL = 'https://api.openintegrity.org'
+# MD_DB = 'policies'
+# MD_DOC = 'watch-url'
+
 
 # rabbitmq configuration
 AMQP_CONFIG = {'AMQP_URI': 'amqp://guest:guest@localhost'}

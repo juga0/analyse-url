@@ -72,6 +72,6 @@ class AnalyseURLService(object):
         if not md_hash_in_store:
             logger.info('hash is not in the file system')
             store(md_filepath, content_md)
-            put_md_url(MD_URL, url, hash_md, content_md, etag, last_modified,
-                       AGENT_TYPE)
+            put_md_url(MD_URL % url2filenamedashes(url), url, hash_md,
+                       content_md, etag, last_modified, AGENT_TYPE)
         return Response(json.dumps({'url': url}))
