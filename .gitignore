@@ -6,3 +6,4 @@ dist
 *.egg-info
 *local*
 ssh/*
+data

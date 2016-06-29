@@ -63,15 +63,16 @@ class AnalyseURLService(object):
         hash_html = json_data.get('hash_html')
         etag = json_data.get('etag')
         last_modified = json_data.get('last_modified')
-        html_filepath = join(FS_PATH, url2filenamedashes(url) + hash_html + '.html')
+        html_filepath = join(FS_PATH, url2filenamedashes(url), hash_html + '.html')
         content_html = retrieve_content_store(html_filepath)
-        content_md = html2md(content_html)
-        hash_md = generate_hash(content_md)
-        md_filepath = join(FS_PATH, url2filenamedashes(url) + hash_md + '.md')
-        md_hash_in_store = retrieve_hash_store(md_filepath)
-        if not md_hash_in_store:
-            logger.info('hash is not in the file system')
-            store(md_filepath, content_md)
-            put_md_url(MD_URL % url2filenamedashes(url), url, hash_md,
-                       content_md, etag, last_modified, AGENT_TYPE)
+        if content_html:
+            content_md = html2md(content_html)
+            hash_md = generate_hash(content_md)
+            md_filepath = join(FS_PATH, url2filenamedashes(url), hash_md + '.md')
+            md_hash_in_store = retrieve_hash_store(md_filepath)
+            if not md_hash_in_store:
+                logger.info('hash is not in the file system')
+                store(md_filepath, content_md)
+                put_md_url(MD_URL, url, hash_md,
+                           content_md, etag, last_modified, AGENT_TYPE)
         return Response(json.dumps({'url': url}))

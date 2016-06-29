@@ -19,13 +19,13 @@ AGENT_TYPE = 'analyse-url'
 # configuration yaml file. All the configuration here could go there
 CONFIG = join(ROOT_PATH, 'config.yaml')
 
-FS_PATH = join(PROJECT_PATH, 'policies', 'data')
+FS_PATH = join(PROJECT_PATH, 'data')
 
 # analyse-url configuration
 # https://api.openintegrity.org/policies/https://guardianproject.info/home/data-usage-and-protection-policies/
 COUCHDB_URL = 'https://staging-store.openintegrity.org'
-MD_DB = 'tos'
-MD_URL = '/'.join([COUCHDB_URL,MD_DB,'%s'])
+MD_DB = 'url'
+MD_URL = '/'.join([COUCHDB_URL, MD_DB])
 
 # COUCHDB_URL = 'https://api.openintegrity.org'
 # MD_DB = 'policies'

@@ -3,6 +3,7 @@ from os.path import join, isfile, isdir, dirname
 from os import makedirs
 import requests
 import sys
+import codecs
 import logging
 try:
     from agents_common.scraper_utils import timestamp, url2filenamedashes
@@ -18,20 +19,20 @@ except:
 logger = logging.getLogger(__name__)
 
 
-def retrieve_content_store(filepath):
+def retrieve_content_store(filepath, encoding='utf-8'):
     """
     """
     # filepath = join(dirpath, url + hash_content)
     logger.debug('checking whether %s exists', filepath)
     if isfile(filepath):
         logger.info('html with with path %s exists', filepath)
-        with open(filepath) as f:
+        with codecs.open(filepath, "r", encoding) as f:
             content = f.read()
         return content
     return ''
 
 
-def retrive_hash_store(filepath):
+def retrieve_hash_store(filepath):
     """
     """
     # filepath = join(dirpath, url + hash_content)
@@ -42,7 +43,7 @@ def retrive_hash_store(filepath):
     return False
 
 
-def store(filepath, content):
+def store(filepath, content, encoding='utf-8'):
     """
     """
     # filepath = join(dirpath, url + hash_page_html)
@@ -54,14 +55,28 @@ def store(filepath, content):
         f.write(content)
 
 
-def generate_agent_id(url):
+def generate_agent_id(url, agent_type, etag=None, last_modified=None):
     """
-    192.168.1.1-https-www.whispersystems.org-signal-privacy-20160613T190136Z
+    analyse-url-192.168.1.1-https-www.whispersystems.org-signal-privacy-20160613T190136Z
     """
     ip = obtain_public_ip()
     urlfilename = url2filenamedashes(url)
-    dt = timestamp()
-    agent_id = '-'.join(ip, urlfilename, dt)
+    # timestamp is not the the system timestamp but the etag/last_modified
+    # dt = timestamp()
+
+    agent_id = '-'.join([agent_type, ip, urlfilename, dt])
+    return agent_id
+
+
+def generate_agent_hash_id(url, agent_type, sha):
+    """
+    analyse-url-192.168.1.1-https-www.whispersystems.org-signal-privacy-sha
+    """
+    ip = obtain_public_ip()
+    urlfilename = url2filenamedashes(url)
+    # FIXME: do we need the timestamp
+    # dt = timestamp()
+    agent_id = '-'.join([agent_type, ip, urlfilename, sha])
     return agent_id
 
 
@@ -83,7 +98,7 @@ def put_md_url(db_url, url, hash_content, content_md, etag, last_modified,
     }
     """
     data = {
-       "_id": generate_agent_id(url),
+       "_id": generate_agent_hash_id(url, agent_type, hash_content),
        "key": url,
        "agent_ip": obtain_public_ip(),
        "agent_type": agent_type,
@@ -94,7 +109,6 @@ def put_md_url(db_url, url, hash_content, content_md, etag, last_modified,
        },
        "content": content_md
     }
-    complete_url = '/'.join([url, hash_content])
-    logger.debug('get url %s with sha %s' % (url, hash_content))
-    r = requests.put(complete_url, data=data)
+    logger.debug('post store_url %s with json %s', db_url, data)
+    r = requests.post(db_url, json=data)
     return r.status_code
