@@ -1,7 +1,7 @@
 # foobar.yaml
 # AMQP_URI: 'amqp://guest:guest@https://163.172.154.92'
-AMQP_URI: 'amqp://guest:guest@localhost'
-WEB_SERVER_ADDRESS: '0.0.0.0:8000'
+AMQP_URI: 'amqp://guest:guest@127.0.0.1:4369'
+WEB_SERVER_ADDRESS: '127.0.0.1:8002'
 rpc_exchange: 'nameko-rpc'
 max_workers: 10
 parent_calls_tracked: 10

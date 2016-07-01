@@ -16,15 +16,15 @@ Check https://virtualenv.pypa.io/en/latest/installation.html or if Debian equal/
 
     sudo apt-get install python-virtualenv
 
-#### Create a virtualenv
+#### Create a virtualen
 
     mkdir ~/.virtualenvs
     virtualenv ~/.virtualenvs/oiienv
     source ~/.virtualenvs/oiienv/bin/activate
 
 #### Install dependencies in virtualenv
-    git clone https://lab.openintegrity.org/agents/fetch-url.git
-    cd fetch-url
+    git clone https://lab.openintegrity.org/agents/analyse-url.git
+    cd analyse-url
     pip install -r requirements.txt
 
 ## Configuration
@@ -33,5 +33,5 @@ TBD
 
 ## Running
 
-    cd fetch-url/fetch_url
-    nameko run fetch_url
+    cd analyse-url/analyse_url
+    nameko run analyse_url --config config.yaml
