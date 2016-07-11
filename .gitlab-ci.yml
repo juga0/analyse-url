@@ -1,0 +1,94 @@
+image: docker:1.10
+
+stages:
+- build
+- register
+# - deploy
+# - test
+
+variables:
+  PROJECT_NAME: analyse-url
+  PROJECT_VERSION: 0.0.1
+  CONTAINER_IMAGE: docker.iilab.org:5000/openintegrity/$PROJECT_NAME
+  CONTAINER_TEST_TAG: $PROJECT_VERSION-test-$CI_BUILD_REF_NAME
+
+before_script:
+  - docker login --username cirunner --password $CI_PORTUS_PASSWORD --email admin@iilab.org docker.iilab.org:5000
+#
+# build-branch:
+#   stage: build
+#   script:
+#     - docker build --pull -t $CONTAINER_IMAGE:$CONTAINER_TEST_TAG .
+#     - docker push $CONTAINER_IMAGE:$CONTAINER_TEST_TAG
+#   tags:
+#     - docker-build
+#   only:
+#     - branches
+
+build:
+  stage: build
+  script:
+    - docker build --pull -t $CONTAINER_IMAGE:$CONTAINER_TEST_TAG .
+    - docker push $CONTAINER_IMAGE:$CONTAINER_TEST_TAG
+  tags:
+    - docker-build
+  only:
+    - master
+
+# test1:
+#   stage: test
+#   tags:
+#     - docker-build
+#   script:
+#     - docker pull $CONTAINER_IMAGE:$CONTAINER_TEST_TAG
+#     - docker run $CONTAINER_IMAGE:$CONTAINER_TEST_TAG /script/to/run/tests
+#
+# test2:
+#   stage: test
+#   tags:
+#     - docker-build
+#   script:
+#     - docker pull $CONTAINER_IMAGE:$CONTAINER_TEST_TAG
+#     - docker run $CONTAINER_IMAGE:$CONTAINER_TEST_TAG /script/to/run/another/test
+#
+# register-branch:
+#   stage: register
+#   script:
+#     - docker pull $CONTAINER_IMAGE:$CONTAINER_TEST_TAG
+#     - docker tag $CONTAINER_IMAGE:$CONTAINER_TEST_TAG $CONTAINER_IMAGE:$PROJECT_VERSION-$CI_BUILD_REF_NAME
+#     - docker push $CONTAINER_IMAGE:$PROJECT_VERSION-$CI_BUILD_REF_NAME
+#   only:
+#     - branches
+#   tags:
+#     - docker-build
+
+register:
+  stage: register
+  script:
+    - docker pull $CONTAINER_IMAGE:$CONTAINER_TEST_TAG
+    - docker tag $CONTAINER_IMAGE:$CONTAINER_TEST_TAG $CONTAINER_IMAGE:$PROJECT_VERSION
+    - docker push $CONTAINER_IMAGE:$PROJECT_VERSION
+  only:
+    - master
+  tags:
+    - docker-build
+
+# deploy-branch:
+#   variables:
+#     RANCHER_STACK_NAME: $PROJECT_NAME-$PROJECT_VERSION-$CI_BUILD_REF_NAME
+#   stage: deploy
+#   script: bash -l "deploy/deploy.sh"
+#   only:
+#     - branches
+#   tags:
+#     - docker
+#
+# deploy-master:
+#   variables:
+#     RANCHER_STACK_NAME: $PROJECT_NAME-$PROJECT_VERSION
+#   stage: deploy
+#   script: bash -l "deploy/deploy.sh"
+#   only:
+#     - master
+#   tags:
+#     - docker
