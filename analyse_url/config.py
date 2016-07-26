@@ -18,9 +18,9 @@ FS_PATH = join(PROJECT_PATH, 'data')
 
 # couchdb configuration and urls
 STORE_URL = 'https://staging-store.openintegrity.org'
-URLS_DB = 'url'
-URLS_DB_URL = '/'.join([STORE_URL, URLS_DB])
-URLS_DOC_URL = '/'.join([URLS_DB_URL, "%s"])
+DB = 'url'
+STORE_DB_URL = '/'.join([STORE_URL, DB])
+STORE_UPDATE_DOC_URL = '/'.join([STORE_DB_URL, "%s"])
 
 
 # rabbitmq configuration

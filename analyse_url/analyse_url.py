@@ -7,7 +7,7 @@ import json
 import logging
 import logging.config
 # from logger import LoggingDependency
-from config import FS_PATH, URLS_DOC_URL, AGENT_TYPE, SERVICE_NAME
+from config import FS_PATH, STORE_UPDATE_DOC_URL, AGENT_TYPE, SERVICE_NAME
 try:
     from agents_common.html_utils import html2md
     from agents_common.policies_util import generate_hash
@@ -86,6 +86,6 @@ class AnalyseURLService(object):
                 data = generate_urls_data(AGENT_TYPE, url, etag, last_modified,
                                           content_md)
                 doc_id = generate_doc_id(AGENT_TYPE, url, hash_md)
-                store_url = URLS_DOC_URL % doc_id
+                store_url = STORE_UPDATE_DOC_URL % doc_id
                 put_store_hash(store_url, data)
         return Response(status=200)
