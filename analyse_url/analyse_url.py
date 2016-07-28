@@ -1,24 +1,28 @@
 """analyse_url."""
+import sys
+import json
+import logging
+import logging.config
+
 from nameko.web.handlers import http
 from werkzeug.wrappers import Response
 from werkzeug import exceptions
 from os.path import join
-import json
-import logging
-import logging.config
-# from logger import LoggingDependency
-from config import FS_PATH, STORE_UPDATE_DOC_URL, AGENT_TYPE, SERVICE_NAME
+
 try:
     from agents_common.html_utils import html2md
     from agents_common.policies_util import generate_hash
     from agents_common.scraper_utils import url2filenamedashes
 except:
     from config import AGENTS_MODULE_PATH
-    import sys
     sys.path.append(AGENTS_MODULE_PATH)
     from agents_common.html_utils import html2md
     from agents_common.policies_util import generate_hash
     from agents_common.scraper_utils import url2filenamedashes
+
+from config import STORE_UPDATE_DOC_URL, AGENT_TYPE, SERVICE_NAME
+from config_common import FS_PATH
+
 from analyse_utils import retrieve_content_store, retrieve_hash_store, \
     save_content_store, put_store_hash, generate_urls_data, generate_doc_id, \
     scraper_content
@@ -27,8 +31,8 @@ logging.basicConfig(level=logging.DEBUG)
 try:
     from config import LOGGING
     logging.config.dictConfig(LOGGING)
-except:
-    print 'No LOGGING configuration found.'
+except ImportError:
+    print "Couldn't find LOGGING in config.py"
 logger = logging.getLogger(__name__)
 
 
@@ -89,3 +93,4 @@ class AnalyseURLService(object):
                 store_url = STORE_UPDATE_DOC_URL % doc_id
                 put_store_hash(store_url, data)
         return Response(status=200)
+# TODO: add main

@@ -1,54 +1,29 @@
-"""fetch-rul configuration."""
+"""analyse-url configuration."""
 from os.path import join, abspath, dirname
+from os import environ
+from config_common import NAME_SEPARATOR, AGENT_NAME, AGENT_SUFFIX,\
+    STORE_URL, STORE_CONFIG_DB
 
+AGENT_TYPE = 'analyse'
+SERVICE_NAME = 'analyse_page_tos'
 
-BASE_PATH = abspath(__file__)
-# BASE_PATH = abspath('.')
-ROOT_PATH = dirname(BASE_PATH)
-PROJECT_PATH = dirname(ROOT_PATH)
-ROOT_PROJECT_PATH = dirname(PROJECT_PATH)
-# in case agents-common-code is not installed, the path to it is requered
-AGENTS_MODULE_DIR = 'agents-common-code'
-AGENTS_MODULE_PATH = join(ROOT_PROJECT_PATH, AGENTS_MODULE_DIR)
+# configuration that depends on common constants
+STORE_DB = environ.get('STORE_CONFIG_DOC') or \
+    NAME_SEPARATOR.join([AGENT_NAME, AGENT_SUFFIX])
+STORE_DB_URL = '/'.join([STORE_URL, STORE_DB])
 
-AGENT_TYPE = 'analyse-url'
-SERVICE_NAME = 'analyseurl'
+STORE_LATEST_VIEW = "_design/" + STORE_DB +\
+    """/_view/latest?reduce=true&group_level=2&""" \
+    """startkey=["%s"]&endkey=["%s",{}]"""
+STORE_LATEST_VIEW_URL = '/'.join([STORE_DB_URL, STORE_LATEST_VIEW])
+# STORE_LATEST_VIEW_URL = """https://staging-store.openintegrity.org/github-repo-issues/_design/github-repo-issues/_view/latest?reduce=true&group_level=2&startkey=["%s"]&endkey=["%s",{}]"""
 
-FS_PATH = join(PROJECT_PATH, 'data')
+STORE_UPDATE_DOC = "_design/" + STORE_DB + "/_update/timestamped/%s"
+STORE_UPDATE_DOC_URL = '/'.join([STORE_DB_URL, STORE_UPDATE_DOC])
+# STORE_UPDATE_DOC_URL = "https://staging-store.openintegrity.org/github-repo-issues/_design/github-repo-issues/_update/timestamped/analyse-github-repo-issues-84.251.91.165-https-guardianproject.info-home-data-usage-and-protection-policies--etag"
 
-# couchdb configuration and urls
-STORE_URL = 'https://staging-store.openintegrity.org'
-DB = 'url'
-STORE_DB_URL = '/'.join([STORE_URL, DB])
-STORE_UPDATE_DOC_URL = '/'.join([STORE_DB_URL, "%s"])
+STORE_CONFIG_DOC = environ.get('STORE_CONFIG_DOC') or \
+                    NAME_SEPARATOR.join([AGENT_NAME, AGENT_SUFFIX])
+STORE_CONFIG_URL = '/'.join([STORE_URL, STORE_CONFIG_DB, STORE_CONFIG_DOC])
+# STORE_CONFIG_URL = https://staging-store.openintegrity.org/config/page-tos-juga
 
-
-# rabbitmq configuration
-AMQP_CONFIG = {'AMQP_URI': 'amqp://guest:guest@localhost'}
-
-# logging configuration
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'simple': {
-            'format': "%(levelname)s:%(name)s - %(module)s - %(message)s"
-        }
-    },
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple'
-        }
-    },
-    # 'loggers': {
-    #     'nameko': {
-    #         'level': 'DEBUG',
-    #         'handlers': ['console']
-    #     }
-    # },
-    'root': {
-        'level': 'DEBUG',
-        'handlers': ['console']
-    }
-}
