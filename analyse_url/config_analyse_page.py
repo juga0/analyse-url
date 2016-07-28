@@ -4,7 +4,9 @@
 from os.path import join, abspath, dirname
 from os import environ
 
-AGENT_NAME = 'page-tos'
+AGENT_SCOPE = 'tos'
+# AGENT_NAME = 'page-tos'
+AGENT_NAME = 'pages'
 AGENT_SUFFIX = 'juga'
 NAME_SEPARATOR = '-'
 # this will be overwroten by the config interval in the store
