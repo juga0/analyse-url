@@ -33,6 +33,10 @@ FS_PATH = join(PROJECT_PATH, 'data')
 # couchdb configuration and urls
 STORE_URL = 'https://staging-store.openintegrity.org'
 STORE_CONFIG_DB = environ.get('STORE_CONFIG_DB') or 'config'
+STORE_CONFIG_DOC = environ.get('STORE_CONFIG_DOC') or \
+                    NAME_SEPARATOR.join([AGENT_NAME, AGENT_SUFFIX])
+STORE_CONFIG_URL = '/'.join([STORE_URL, STORE_CONFIG_DB, STORE_CONFIG_DOC])
+# STORE_CONFIG_URL = https://staging-store.openintegrity.org/config/page-tos-juga
 
 # data
 ############################

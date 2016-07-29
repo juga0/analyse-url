@@ -1,5 +1,4 @@
-"""analyse-url configuration."""
-from os.path import join, abspath, dirname
+"""Configuration for fetch-url agent."""
 from os import environ
 from config_common import NAME_SEPARATOR, AGENT_NAME, AGENT_SUFFIX,\
     STORE_URL, STORE_CONFIG_DB
