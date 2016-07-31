@@ -8,7 +8,7 @@ stages:
 
 variables:
   PROJECT_NAME: analyse-url
-  PROJECT_VERSION: 0.0.2
+  PROJECT_VERSION: 0.0.3
   CONTAINER_IMAGE: docker.iilab.org:5000/openintegrity/$PROJECT_NAME
   CONTAINER_TEST_TAG: $PROJECT_VERSION-test-$CI_BUILD_REF_NAME
 
