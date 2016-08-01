@@ -188,7 +188,6 @@ def post_store(url, data, only_status_code=False):
 
 
 def post_store_hash(url, data):
-    # FIXME!!!!!!
     """
     Like put_store_hash but using method POST
     """
