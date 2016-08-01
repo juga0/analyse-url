@@ -85,7 +85,7 @@ LOGGING = {
         }
     },
     'handlers': {
-        'console': {
+        'console_stderr': {
             'class': 'logging.StreamHandler',
             'formatter': 'simple',
             'level': 'ERROR'
