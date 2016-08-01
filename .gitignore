@@ -5,5 +5,7 @@ build
 dist
 *.egg-info
 *local*
-ssh/*
 data
+.cache
+_design
+*agents_common
