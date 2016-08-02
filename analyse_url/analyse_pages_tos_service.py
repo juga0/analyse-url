@@ -10,12 +10,9 @@ from nameko.testing.utils import get_container
 
 from analyse_url import AnalyseURLService
 
-try:
-    from config_common import LOGGING, CONFIG_YAML_PATH, WEB_SERVER_ADDRESS
-    logging.config.dictConfig(LOGGING)
-except:
-    print 'No LOGGING configuration found.'
-    logging.basicConfig(level=logging.DEBUG)
+from config_common import LOGGING, CONFIG_YAML_PATH, WEB_SERVER_ADDRESS
+logging.config.dictConfig(LOGGING)
+
 logger = logging.getLogger(__name__)
 
 def update_config_yaml(config_dict, path):

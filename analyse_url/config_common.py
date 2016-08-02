@@ -141,3 +141,11 @@ LOGGING = {
         # 'handlers': ['console', 'debug_file_handler']
     }
 }
+
+# nameko
+############################
+CONFIG_YAML_PATH = join(ROOT_PATH, 'config.yaml')
+WEB_SERVER_ADDRESS = '127.0.0.1:8000'
+# rabbitmq configuration
+# this doesn't have any effect here
+# AMQP_CONFIG = {'AMQP_URI': 'amqp://guest:guest@localhost'}

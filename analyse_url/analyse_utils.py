@@ -29,7 +29,7 @@ except ImportError as e:
         sys.exit()
 
 logger = logging.getLogger(__name__)
-print('logger name %s', logger)
+
 
 def generate_doc_id(agent_type, url, url_path_id=''):
     """
