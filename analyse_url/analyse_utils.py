@@ -28,6 +28,8 @@ except ImportError as e:
               ' create a symlink inside this program path')
         sys.exit()
 
+from config_common import AGENT_ATTRIBUTE, AGENT_PAYLOAD
+
 logger = logging.getLogger(__name__)
 
 
@@ -43,38 +45,42 @@ def generate_doc_id(agent_type, url, url_path_id=''):
     return doc_id
 
 
-def generate_urls_data(agent_type, page_type, url, etag, last_modified,
-                       sha256='', sha256_md='', content='', xpath=''):
+# def generate_urls_data(agent_type, page_type, url, etag, last_modified,
+#                        xpath='', content='', attribute=AGENT_ATTRIBUTE,
+#                        hash_html='', hash_md=''):
+
+
+def generate_urls_data(dict_data, content, hash_md, agent_type):
     """
-    https://staging-store.openintegrity.org/pages-juga/_design/page/_update/timestamped/watch-176.10.104.243-httpsguardianproject.infohomedata-usage-and-protection-policies-
-    data = {'agent_ip': '78.142.19.213',
-     'agent_type': 'watch',
-     'page_type': 'tos',
-     'content': '',
-     'header': {'etag': '', 'last_modified': ''},
-     'key': u'https://guardianproject.info/home/data-usage-and-protection-policies/',
-     'timestamp_measurement': '2016-07-29T23:13:15.511Z',
-     'xpath': '//article',
-     'sha256': ''
-     'sha256_md': ''}
+    {"attribute": "page/content", "context": {"xpath": "//div[@id='body']", "agent_type": "watch", "timestamp_measurement": "2016-08-05T13:21:40.396293Z", "page_type": "tos", "agent_ip": "65.181.112.128"}, "value": {"header": {"last-modified": "Mon, 01 Sep 1997 01:03:33 GMT", "etag": "None"}, "sha256_html": "43fa5a6f123a2cbb7a6c84b6ca9511b26ffef385121d026fdbab2202b7534e1f"}, "entity": "http://www.t-mobile.com/Templates/Popup.aspx?PAsset=Ftr_Ftr_TermsAndConditions&amp;print=true"}
+     {
+         "entity": "%(entity)",
+         "attribute": "page/content",
+         "value": {
+             "header": {
+                 "etag": "%(etag)",
+                 "last-modified": "%(last_modified)"
+             },
+             "content": "%(content)",
+             "sha256_html": "%(sha256_html)",
+             "sha256_md": "%(sha256_md)"
+         },
+         "context": {
+             "timestamp_measurement": "%(timestamp_measurement)",
+             "agent_type": "%(agent_type)",
+             "agent_ip": "%(agent_ip)",
+             "page_type": "%(page_type)",
+             "xpath": "%(xpath)"
+         }
+     }
     """
     logger.debug('Generating payload.')
-    data = {
-        'key': url,
-        'agent_ip':  obtain_public_ip(),
-        'agent_type': agent_type,
-        'page_type': page_type,
-        'timestamp_measurement': now_timestamp_ISO_8601(),
-        'header': {
-            'etag': etag,
-            'last_modified': last_modified
-            },
-        'content': content,
-        'xpath': xpath,
-        'sha256': sha256,
-        'sha256_md': sha256_md
-        }
-    return data
+    dict_data['value']['sha256_md'] = hash_md
+    dict_data['value']['content'] = content
+    dict_data['context']['agent_type'] = agent_type
+    dict_data['context']['timestamp_measurement'] = now_timestamp_ISO_8601()
+    dict_data['context']['agent_ip'] = obtain_public_ip()
+    return dict_data
 
 
 def retrieve_content_store(filepath, encoding='utf-8'):
@@ -138,7 +144,7 @@ def get_store_hash(url):
     logger.debug('Contacting store.')
     rows = get_store(url, 'rows')
     if rows:
-        keys_indexes = ['rows', 0, 'value', 'sha256']
+        keys_indexes = [0, 'value', 'sha256']
         try:
             hash = get_value_from_key_index(rows, keys_indexes)
         except (KeyError, IndexError):
@@ -152,19 +158,15 @@ def get_store_hash(url):
 
 def get_store_hash_md(url):
     # TODO: manage conflict when status code 409
-    hash = last_modified = ''
+    hash = ''
     rows = get_store(url, 'rows')
     if rows:
         keys_indexes = ['rows', 0, 'value', 'sha256_md']
         try:
             hash = get_value_from_key_index(rows, keys_indexes)
         except (KeyError, IndexError):
-            keys_indexes = ['rows', 0, 'value', 'sha256_md']
-            try:
-                last_modified = get_value_from_key_index(rows, keys_indexes)
-            except (KeyError, IndexError):
-                pass
-    return hash, last_modified
+            pass
+    return hash
 
 
 def post_store(url, data, only_status_code=False):
