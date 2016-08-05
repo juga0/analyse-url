@@ -10,9 +10,8 @@ SERVICE_NAME = 'analyse_page_tos'
 STORE_DB = environ.get('STORE_CONFIG_DOC') or \
     NAME_SEPARATOR.join([AGENT_NAME, AGENT_SUFFIX])
 STORE_DB_URL = '/'.join([STORE_URL, STORE_DB])
-STORE_LATEST_VIEW = '_design/page/_view/latest?reduce=true&group_level=2&' \
-    'startkey=["page","' + PAGE_TYPE + '","%s"]' \
-    '&endkey=["page","' + PAGE_TYPE + '","%s",{}]'
+STORE_LATEST_VIEW = '_design/page/_view/latest?group=true&' \
+    'startkey=["page", "%s"]'
 STORE_LATEST_VIEW_URL = '/'.join([STORE_DB_URL, STORE_LATEST_VIEW])
 # https://staging-store.openintegrity.org/pages-juga/_design/page/_view/latest?reduce=true&group_level=2&startkey=["page","tos","https://guardianproject.info/home/data-usage-and-protection-policies/"]&endkey=["page","tos","https://guardianproject.info/home/data-usage-and-protection-policies/",{}]
 

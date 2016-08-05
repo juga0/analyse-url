@@ -32,15 +32,30 @@ except ImportError:
               ' create a symlink inside this program path')
         sys.exit()
 
-from analyse_url.config import STORE_UPDATE_DOC_URL, AGENT_TYPE, SERVICE_NAME
+from analyse_url.config import STORE_UPDATE_DOC_URL, AGENT_TYPE, SERVICE_NAME, \
+    STORE_LATEST_VIEW_URL
 from analyse_url.config_common import FS_PATH, PAGE_TYPE
 
 from analyse_url.analyse_utils import retrieve_content_store, retrieve_hash_store, \
     save_content_store, post_store_hash, generate_urls_data, generate_doc_id, \
-    scraper_content, post_store
+    scraper_content, post_store, get_store, get_value_from_key_index
 
 
 logger = logging.getLogger(__name__)
+
+
+# def test_get_store():
+#     payload = """{u'attribute': u'page/content', u'_rev': u'1-8d8295a67bdaafb46b5da1831b7c22a8', u'value': {u'header': {u'etag': u'', u'last_modified': u''}}, u'entity': u'https://guardianproject.info/home/data-usage-and-protection-policies/', u'context': {u'xpath': u'//article', u'agent_ip': u'185.69.168.112', u'timestamp_submission': u'2016-08-04T01:41:15.386Z', u'agent_type': u'watch', u'page_type': u'tos', u'timestamp_update': u'2016-08-04T01:41:15.386Z', u'timestamp_measurement': u'2016-08-04T01:06:18.125782Z'}, u'_id': u'watch-176.10.104.243-httpsguardianproject.infohomedata-usage-and-protection-policies-'}"""
+#     url = 'https://guardianproject.info/home/data-usage-and-protection-policies/'
+#     data = get_store(STORE_LATEST_VIEW_URL % (url,), 'rows')
+#     logger.debug(STORE_LATEST_VIEW_URL % (url,))
+#     logger.debug('Data from the store %s.', data)
+#     assert payload == data
+#     hash_html_store = get_value_from_key_index(data, [0, 'value', 'sha256_html'])
+#     logger.debug('hash_html_store %s', hash_html_store)
+#     hash_md_store = get_value_from_key_index(data, [0, 'value', 'sha256_md'])
+#     logger.debug('hash_md_store %s', hash_html_store)
+#     # ....
 
 
 def test_gen_store_update_url_hash_payload():
