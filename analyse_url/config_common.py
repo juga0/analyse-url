@@ -8,7 +8,7 @@ DEBUG = environ.get('DEBUG') or False
 DATA_DIR_DEFAULT = 'data'
 LOG_FILE_DEFAULT = 'log/info.log'
 LOG_ERROR_FILE_DEFAULT = 'log/error.log'
-CONSOLE_LOG_DEFAULT = 'ERROR'
+CONSOLE_LOG_DEFAULT = 'INFO'
 AGENTS_MODULE_DIR = 'agents-common-code'
 STORE_URL_DEFAULT = 'https://staging-store.openintegrity.org'
 
