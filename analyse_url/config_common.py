@@ -146,20 +146,18 @@ LOGGING = {
     'loggers': {
         'nameko': {
             'level': 'DEBUG',
-            'handlers': ['console_stderr', 'debug_file_handler']
+            'handlers': ['console_stderr']
         },
         # uncomment this to get logs only from these modules and comment root
         'analyse_url': {
             # DEBUG must be here to catch all possible logs
             # that will get filtered by the handler
             'level': 'DEBUG',
-            'handlers': ['console_stderr', 'console_stdout',
-                         'debug_file_handler']
+            'handlers': ['console_stderr', 'console_stdout']
         },
         'analyse_utils': {
             'level': 'DEBUG',
-            'handlers': ['console_stderr', 'console_stdout',
-                         'debug_file_handler']
+            'handlers': ['console_stderr', 'console_stdout']
         }
     },
     # 'root': {
