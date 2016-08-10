@@ -80,7 +80,7 @@ class AnalyseURLService(object):
         # if the html is not in the FS, the markdown and its hash can't be
         # calculated, no matter if it's already in the store or not
         logger.debug('Getting hash from store.')
-        store_data = get_store(STORE_LATEST_VIEW_URL % (url,), ['rows', 0, 'value'])
+        store_data = get_store(STORE_LATEST_VIEW_URL % (url, url), ['rows', 0, 'value'])
         logger.debug('Data from the store %s.', store_data)
         hash_html_store = get_value_from_key_index(store_data, ['value', 'sha256_html'])
         hash_md_store = get_value_from_key_index(store_data, ['value', 'sha256_md'])

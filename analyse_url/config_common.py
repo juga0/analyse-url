@@ -14,10 +14,11 @@ STORE_URL_DEFAULT = 'https://staging-store.openintegrity.org'
 
 PAGE_TYPE = 'tos'
 AGENT_NAME = 'pages'
-AGENT_SUFFIX = 'juga'
+AGENT_SUFFIX = 'juga-v3'
 NAME_SEPARATOR = '-'
 # this will be overwritten by the config interval in the store
 INTERVAL = 60
+STORE_CONFIG_DOC_DEFAULT= 'pages-juga'
 CONFIG_DOC_KEY = 'config'
 AGENT_ATTRIBUTE = 'page/content'
 
